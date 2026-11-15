@@ -1,0 +1,19 @@
+[2026-11-15T13:50:00.875+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-11-15T13:50:00.884+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spotify_ingest.ingest_recent_plays scheduled__2026-11-15T13:40:00+00:00 [queued]>
+[2026-11-15T13:50:00.888+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spotify_ingest.ingest_recent_plays scheduled__2026-11-15T13:40:00+00:00 [queued]>
+[2026-11-15T13:50:00.888+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 3
+[2026-11-15T13:50:00.894+0000] {taskinstance.py:2889} INFO - Executing <Task(PythonOperator): ingest_recent_plays> on 2026-11-15 13:40:00+00:00
+[2026-11-15T13:50:00.905+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=536) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-11-15T13:50:00.906+0000] {standard_task_runner.py:72} INFO - Started process 537 to run task
+[2026-11-15T13:50:00.903+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'spotify_ingest', 'ingest_recent_plays', 'scheduled__2026-11-15T13:40:00+00:00', '--job-id', '15', '--raw', '--subdir', 'DAGS_FOLDER/spotify_ingest.py', '--cfg-path', '/tmp/tmpzywn2ljk']
+[2026-11-15T13:50:00.908+0000] {standard_task_runner.py:105} INFO - Job 15: Subtask ingest_recent_plays
+[2026-11-15T13:50:00.950+0000] {task_command.py:467} INFO - Running <TaskInstance: spotify_ingest.ingest_recent_plays scheduled__2026-11-15T13:40:00+00:00 [running]> on host e23b2b7f7ad2
+[2026-11-15T13:50:00.994+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='spotify_ingest' AIRFLOW_CTX_TASK_ID='ingest_recent_plays' AIRFLOW_CTX_EXECUTION_DATE='2026-11-15T13:40:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-11-15T13:40:00+00:00'
+[2026-11-15T13:50:00.995+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2026-11-15T13:50:02.507+0000] {logging_mixin.py:190} INFO - Fetched 50 plays, saved 0 new ones.
+[2026-11-15T13:50:02.508+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-11-15T13:50:02.521+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2026-11-15T13:50:02.521+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=spotify_ingest, task_id=ingest_recent_plays, run_id=scheduled__2026-11-15T13:40:00+00:00, execution_date=20261115T134000, start_date=20261115T135000, end_date=20261115T135002
+[2026-11-15T13:50:02.575+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-11-15T13:50:02.594+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-11-15T13:50:02.596+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
