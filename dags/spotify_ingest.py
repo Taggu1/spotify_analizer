@@ -29,7 +29,7 @@ def fetch_recent_plays(access_token):
     resp = requests.get(
                 "https://api.spotify.com/v1/me/player/recently-played",
         headers={"Authorization": f"Bearer {access_token}"},
-        params={"limit":80}
+        params={"limit":50}
     )
 
     resp.raise_for_status()

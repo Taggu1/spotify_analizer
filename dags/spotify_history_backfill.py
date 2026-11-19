@@ -73,6 +73,7 @@ def create_views():
         GROUP BY artist_name
         ORDER BY plays DESC;
 
+        DROP VIEW IF EXISTS plays_by_hour;
         CREATE OR REPLACE VIEW plays_by_hour AS
         SELECT TO_CHAR(played_at AT TIME ZONE 'Africa/Cairo','HH12 AM') as hour, COUNT(*) as plays FROM listens
         GROUP BY 1
