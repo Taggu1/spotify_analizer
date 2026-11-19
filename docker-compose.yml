@@ -10,6 +10,7 @@ x-airflow-common: &airflow-common
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
+    - ./exports:/opt/airflow/exports:ro
   depends_on:
     postgres:
       condition: service_healthy
@@ -20,12 +21,13 @@ services:
     container_name: spotify-postgres
     environment:
       POSTGRES_USER: spotify
-      POSTGRES_PASSWORD: spotify
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: spotify
     ports:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - sql/00_init.sql:/docker-entrypoint-initdb.d/00_init.sql:ro
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U spotify" ]
       interval: 5s
@@ -55,6 +57,16 @@ services:
     depends_on:
       airflow-init:
         condition: service_completed_successfully
+  dashboard:
+    build: ./dashboard
+    container_name: spotify-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://spotify:spotify@postgres:5432/spotify
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   pgdata:

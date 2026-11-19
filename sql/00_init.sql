@@ -1,0 +1,3 @@
+CREATE USER airflow;
+
+CREATE DATABASE airflow;
