@@ -68,7 +68,7 @@ spotify-de/
 ### 1. Clone and create `.env`
 
 ```bash
-git clone <your-repo-url> spotify-de
+git clone https://github.com/Taggu1/spotify_analizer.git spotify-de
 cd spotify-de
 ```
 

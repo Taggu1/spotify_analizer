@@ -3,3 +3,4 @@ exports/
 logs/
 __pycache__/
 .venv/
+.cashe
