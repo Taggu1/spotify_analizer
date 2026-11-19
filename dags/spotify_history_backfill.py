@@ -74,17 +74,10 @@ def create_views():
         ORDER BY plays DESC;
 
         CREATE OR REPLACE VIEW plays_by_hour AS
-        SELECT EXTRACT(HOUR FROM played_at AT TIME ZONE 'Africa/Cairo') AS hour,
-            COUNT(*) AS plays
-        FROM listens
-        GROUP BY 1
-        ORDER BY 1;
-
-        CREATE OR REPLACE VIEW plays_by_hour AS
         SELECT TO_CHAR(played_at AT TIME ZONE 'Africa/Cairo','HH12 AM') as hour, COUNT(*) as plays FROM listens
         GROUP BY 1
         ORDER BY 1 DESC;
-        );
+    
         """)
     conn.close()
 

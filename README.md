@@ -78,7 +78,7 @@ Create a `.env` file:
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 SPOTIFY_REFRESH_TOKEN=
-AIRFLOW_UID=50000
+POSTGRES_PASSWORD=spotify
 ```
 
 ### 2. Create a Spotify app
@@ -96,53 +96,21 @@ python get_token.py
 
 Approve access in the browser. The script appends `SPOTIFY_REFRESH_TOKEN` to `.env` and prints your last 5 plays as a test.
 
-### 4. Start Postgres and create the databases
-
-```bash
-docker compose up -d postgres
-
-# Separate database for Airflow's own metadata
-docker exec -it spotify-postgres psql -U spotify -d spotify -c "CREATE USER airflow WITH PASSWORD 'airflow';"
-docker exec -it spotify-postgres psql -U spotify -d spotify -c "CREATE DATABASE airflow OWNER airflow;"
-
-# The raw API table
-docker exec -it spotify-postgres psql -U spotify -d spotify -c "
-CREATE TABLE IF NOT EXISTS plays (
-    track_id    TEXT,
-    track_name  TEXT,
-    artist_id   TEXT,
-    artist_name TEXT,
-    album_id    TEXT,
-    album_name  TEXT,
-    duration_ms INTEGER,
-    played_at   TIMESTAMPTZ,
-    ingested_at TIMESTAMPTZ DEFAULT now(),
-    PRIMARY KEY (track_id, played_at)
-);"
-```
-
 ### 5. Start Airflow and the dashboard
 
 ```bash
-mkdir -p dags logs exports
-docker compose up airflow-init      # first time only, wait until it exits
-docker compose up -d --build
+make up
 ```
-
 ### 6. Turn on the pipeline
 
 1. Open Airflow at http://localhost:8080 (default login `admin` / `admin`).
 2. Unpause **`spotify_ingest`**. It now runs every 10 minutes: fetch recent plays, save them, run quality checks.
+3. run  **`spotify_load_history`** dag
 
 ### 7. Backfill the full history (optional)
 
 1. Copy the `Streaming_History_Audio_*.json` files from your export into `exports/`.
-2. In Airflow, trigger **`spotify_load_history`** once. It creates the table and loads every file. Re-running it is safe and inserts nothing new.
-3. Create the analytics views:
-
-```bash
-docker exec -i spotify-postgres psql -U spotify -d spotify < sql/02_views.sql
-```
+2. In Airflow, retrigger **`spotify_load_history`** once. It creates the table and loads every file. Re-running it is safe and inserts nothing new.
 
 ### 8. Open the dashboard
 
@@ -204,10 +172,7 @@ After each ingest, the `check_data` task fails the run if:
 
 ## Roadmap
 
-- [ ] Move all passwords into `.env` and add a `.env.example`
-- [ ] Run table and view creation automatically from `sql/` files
 - [ ] Pin Python dependency versions
 - [ ] Nightly database backup
-- [ ] Unit tests and a CI workflow
 - [ ] Deploy to a small server behind HTTPS with a login
 - [ ] More analysis: skip rates, listening by device, taste over time

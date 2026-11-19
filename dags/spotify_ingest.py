@@ -142,3 +142,5 @@ with DAG(
 ) as dag:
     ingest_task = PythonOperator(task_id="ingest_recent_plays",python_callable=ingest)
     check_task = PythonOperator(task_id="check_data", python_callable=check_data)
+
+    ingest_task >> check_task
